@@ -1,0 +1,28 @@
+{
+  "name": "mocha-ui-bdd-meta",
+  "version": "0.0.1",
+  "description": "Mocha BDD UI with Metadata",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "lint": "eslint ",
+    "test": "mocha --require index.js --ui bdd-meta ./specs"
+  },
+  "peerDependencies": {
+    "mocha": ">7"
+  },
+  "author": "Oscar Rieken",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.4.13",
+    "eslint": "^7.32.0",
+    "expect.js": "^0.3.1",
+    "mocha": "^9.0.3",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "escape-string-regexp": "^5.0.0"
+  }
+}
