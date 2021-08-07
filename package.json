@@ -1,18 +1,24 @@
 {
   "name": "mocha-ui-bdd-meta",
-  "version": "0.0.1",
   "description": "Mocha BDD UI with Metadata",
+  "version": "0.0.1",
+  "author": "Oscar Rieken",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/orieken/mocha-ui-bdd-meta.git"
+  },
+  "license": "ISC",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
     "lint": "eslint ",
     "test": "mocha --require index.js --ui bdd-meta ./specs"
   },
+
+
   "peerDependencies": {
-    "mocha": ">7"
+    "mocha": ">9"
   },
-  "author": "Oscar Rieken",
-  "license": "ISC",
   "devDependencies": {
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.4.13",
