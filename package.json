@@ -14,8 +14,6 @@
     "lint": "eslint ",
     "test": "mocha --require index.js --ui bdd-meta ./specs"
   },
-
-
   "peerDependencies": {
     "mocha": ">9"
   },
