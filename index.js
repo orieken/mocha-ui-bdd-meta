@@ -50,7 +50,7 @@ module.exports = Mocha.interfaces['bdd-meta'] = function (suite) {
 
       const suite = Suite.create(suites[0], title);
       suite.file = file;
-      suite.meta = meta;
+      suite.meta = Object.assign({}, suite.parent.meta, meta);
       suites.unshift(suite)
       fn.call(suite);
       suites.shift();

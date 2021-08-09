@@ -1,21 +1,35 @@
-var expect = require('expect.js');
+const expect = require('expect.js');
+
+const Level1 = { foo: 'bar' };
+const Level2 = { hi: 'bye' };
+const TestLevel = { hola: 'adios' };
 
 describe('no meta on suite',  function() {
-  it('meta on it',{words: 1}, function() {
-    expect(this.test.meta).to.eql({ words: 1});
+  it('meta on it',TestLevel, function() {
+    expect(this.test.meta).to.eql(TestLevel);
   });
 });
 
-describe('meta on suite',{x: 1},  function() {
+describe('meta on suite',Level1,  function() {
   it('no meta on it', function() {
-    expect(this.test.meta).to.eql({ x: 1});
+    expect(this.test.meta).to.eql(Level1);
   });
 
-  it('meta on it', { words: 1 }, function() {
-    const suiteMeta = this.test.parent.meta;
-    const testMeta = this.test.meta;
+  it('meta on it', TestLevel, function() {
+    expect(this.test.meta).to.eql({...Level1, ...TestLevel});
+  });
+});
 
-    expect(this.test.parent.meta).to.eql({ x: 1});
-    expect(this.test.meta).to.eql(Object.assign({}, suiteMeta, testMeta));
+describe('Level 1', Level1, function() {
+  it('it has meta from Level 1 and spec', TestLevel , function() {
+    expect(this.test.meta).to.eql({ ...Level1, ...TestLevel });
+  });
+  describe('Level 2',Level2, function() {
+    it('it has meta from Level 1, level 2', function() {
+      expect(this.test.meta).to.eql({ ...Level1, ...Level2});
+    });
+    it('it has meta from Level 1, level 2, and spec', TestLevel , function() {
+      expect(this.test.meta).to.eql({...Level1, ...Level2, ...TestLevel});
+    });
   });
 });
