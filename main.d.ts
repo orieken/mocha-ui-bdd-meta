@@ -54,6 +54,16 @@ declare namespace MochaUiMeta {
     interface MetaSuite {
         (name: number | string | Function | FunctionLike, meta?: unknown, fn?: EmptyFunction): void;
 
+        ctx: MetaContext;
+        suites: MetaSuite[];
+        tests: MetaTest[];
+        pending: boolean;
+        file?: string | undefined;
+        root: boolean;
+        delayed: boolean;
+        parent: MetaSuite | undefined;
+        title: string
+
         only: MetaSuite;
         skip: MetaSuite;
         meta?: unknown;
