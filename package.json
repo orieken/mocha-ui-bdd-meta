@@ -1,7 +1,7 @@
 {
   "name": "mocha-ui-bdd-meta",
   "description": "Mocha BDD UI with Metadata",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "Oscar Rieken",
   "repository": {
     "type": "git",

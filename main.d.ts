@@ -1,10 +1,8 @@
-import { Context, Done, HookFunction, Suite, SuiteFunction, Test, TestFunction } from "mocha";
+declare function MochaUiMeta(suite: any): void;
 
 declare module 'mocha-ui-bdd-meta' {
     export = MochaUiMeta;
 }
-
-declare function MochaUiMeta(suite: any): void;
 
 declare var beforeAll: MochaUiMeta.MetaHookFunction;
 declare var beforeEach: MochaUiMeta.MetaHookFunction;
@@ -18,58 +16,78 @@ declare var test: MochaUiMeta.MetaTestFunction;
 declare var xtest: MochaUiMeta.MetaTestFunction;
 
 declare namespace MochaUiMeta {
-    interface MetaHookFunction extends HookFunction {
-        (fn: (this: MetaContext, done: Done) => void): void;
-        (fn: (this: MetaContext, done: Done) => PromiseLike<any>): void;
-        (name: string, fn?: (this: MetaContext, done: Done) => void): void;
-        (name: string, fn?: (this: MetaContext, done: Done) => PromiseLike<any>): void;
+    type Done = (err?: any) => void;
+    type Func = (this: MetaContext, done: Done) => void;
+    type AsyncFunc = (this: MetaContext) => PromiseLike<any>;
+
+    interface MetaHookFunction {
+        (fn: Func): void;
+        (fn: AsyncFunc): void;
+        (name: string, fn?: Func): void;
+        (name: string, fn?: AsyncFunc): void;
     }
 
-    interface MetaSuiteFunction extends SuiteFunction {
-        (title: string, fn?: (this: MetaSuite) => void): MetaSuite;
-        (title: string, meta?: unknown, fn?: (this: MetaSuite) => void): MetaSuite;
+    interface MetaSuiteFunction {
+        (title: string, fn?: Func): MetaSuite;
+        (title: string, fn?: AsyncFunc): MetaSuite;
+        (title: string, meta?: unknown, fn?: Func): MetaSuite;
+        (title: string, meta?: unknown, fn?: AsyncFunc): MetaSuite;
 
-        only: ExclusiveSuiteFunction
-        skip: PendingSuiteFunction
+        only: MetaExclusiveSuiteFunction
+        skip: MetaPendingSuiteFunction
     }
 
-    interface MetaTestFunction extends TestFunction {
-        (name: string, fn?: (this: MetaContext, done: Done) => void): MetaTest;
-        (name: string, meta?: unknown, fn?: (this: MetaContext, done: Done) => void): MetaTest;
+    interface MetaTestFunction {
+        (fn: Func): MetaTest;
+        (fn: AsyncFunc): MetaTest;
+        (title: string, fn?: Func): MetaTest;
+        (title: string, fn?: AsyncFunc): MetaTest;
+        (name: string, meta?: unknown, fn?: Func): MetaTest;
+        (name: string, meta?: unknown, fn?: AsyncFunc): MetaTest;
 
-        only: ExclusiveTestFunction
-        skip: PendingTestFunction
+        retries(n: number): void;
+        only: MetaExclusiveTestFunction
+        skip: MetaPendingTestFunction
     }
 
 
-    class MetaSuite extends Suite {
+    interface MetaSuite {
+        (name: number | string | Function | FunctionLike, meta?: unknown, fn?: EmptyFunction): void;
+
+        only: MetaSuite;
+        skip: MetaSuite;
         meta?: unknown;
     }
 
-    class MetaTest extends Test {
+    interface MetaTest {
+        (name: string, meta?: unknown, fn?: Func): void;
+
+        only: MetaTest;
+        skip: MetaTest;
         meta?: unknown;
     }
 
-    class MetaContext extends Context {
+    class MetaContext {
         override test?: MetaTest | undefined;
         meta?: unknown;
     }
 
-    interface ExclusiveSuiteFunction {
-        (title: string, meta?: unknown, fn?: (this: MetaSuite) => void): MetaSuite;
-        (title: string, meta?: unknown): Suite;
+    interface MetaExclusiveSuiteFunction {
+        (title: string, meta?: unknown, fn?: Func): MetaSuite;
+        (title: string, meta?: unknown, fn?: AsyncFunc): MetaSuite;
+        (title: string, meta?: unknown): MetaSuite;
     }
 
-    interface PendingSuiteFunction {
-        (title: string, meta?: unknown, fn?: (this: MetaSuite) => void): MetaSuite | void;
+    interface MetaPendingSuiteFunction {
+        (title: string, meta?: unknown, fn?: Func): MetaSuite | void;
     }
 
-    interface PendingTestFunction {
-        (title: string, fn?: (this: MetaContext, done: Done) => void): Test;
+    interface MetaPendingTestFunction {
+        (title: string, fn?: (this: MetaContext, done: Done) => void): MetaTest;
     }
 
-    interface ExclusiveTestFunction {
-        (title: string, fn?: (this: MetaContext, done: Done) => void): Test;
+    interface MetaExclusiveTestFunction {
+        (title: string, fn?: (this: MetaContext, done: Done) => void): MetaTest;
     }
 
 }
