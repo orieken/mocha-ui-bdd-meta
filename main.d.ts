@@ -20,6 +20,12 @@ declare namespace MochaUiMeta {
     type Func = (this: MetaContext, done: Done) => void;
     type AsyncFunc = (this: MetaContext) => PromiseLike<any>;
 
+    interface Error {
+        name: string;
+        message: string;
+        stack?: string;
+    }
+
     interface MetaHookFunction {
         (fn: Func): void;
         (fn: AsyncFunc): void;
@@ -71,6 +77,27 @@ declare namespace MochaUiMeta {
 
     interface MetaTest {
         (name: string, meta?: unknown, fn?: Func): void;
+
+        title: string;
+        fn: Func | AsyncFunc | undefined;
+        body: string;
+        async: boolean;
+        sync: boolean;
+        timedOut: boolean;
+        pending: boolean;
+        duration?: number | undefined;
+        parent?: MetaSuite | undefined;
+        state?: "failed" | "passed" | undefined;
+        timer?: any;
+        ctx?: MetaContext | undefined;
+        callback?: Done | undefined;
+        allowUncaught?: boolean | undefined;
+        file?: string | undefined;
+
+        type: "test";
+        speed?: "slow" | "medium" | "fast" | undefined; // added by reporters
+        err?: Error | undefined; // added by reporters
+        clone(): MetaTest;
 
         only: MetaTest;
         skip: MetaTest;
