@@ -17,7 +17,7 @@
     "test:ts": "mocha --require ts-node/register --require main.js --ui bdd-meta ./specs/meta.spec.ts"
   },
   "peerDependencies": {
-    "mocha": ">9"
+    "mocha": ">= 7"
   },
   "devDependencies": {
     "@types/mocha": "^9.0.0",
